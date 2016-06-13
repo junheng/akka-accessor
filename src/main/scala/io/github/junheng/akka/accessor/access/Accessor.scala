@@ -31,7 +31,7 @@ class Accessor(address: String, port: Int, receiver: ActorSystem, plugins: List[
 
   override def receive: Receive = {
     case bound: Tcp.Bound =>
-      context.system.scheduler.schedule(15 seconds, 15 seconds, sender(), Http.GetStats)
+      context.system.scheduler.schedule(5 minutes, 15 minutes, sender(), Http.GetStats)
       log.info(s"bounded to ${bound.localAddress}, http services initialized")
     case connected: Tcp.Connected => sender() ! Tcp.Register(self)
     case stats: Stats =>
