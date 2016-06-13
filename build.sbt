@@ -6,7 +6,7 @@ val versionOfSpray = "1.3.3"
 
 val versionOfJson4s = "3.2.11"
 
-lazy val root = (project in file("."))
+lazy val root = Project("akka-accessor", file("."))
   .settings(
     name := "akka-accessor",
     version := "0.1-SNAPSHOT",
