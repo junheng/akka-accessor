@@ -14,7 +14,7 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
-class Accessor(address: String, port: Int, receiver: ActorSystem, plugins: List[AccessorPlugin] = Nil) extends Actor with ActorLogging {
+class Accessor(address: String, port: Int, receiver: ActorSystem, plugins: List[AccessorPlugin] = Nil, intervalOfStatusReport:Int) extends Actor with ActorLogging {
 
   import context.dispatcher
 
@@ -31,7 +31,7 @@ class Accessor(address: String, port: Int, receiver: ActorSystem, plugins: List[
 
   override def receive: Receive = {
     case bound: Tcp.Bound =>
-      context.system.scheduler.schedule(5 minutes, 15 minutes, sender(), Http.GetStats)
+      context.system.scheduler.schedule(intervalOfStatusReport minutes, intervalOfStatusReport minutes, sender(), Http.GetStats)
       log.info(s"bounded to ${bound.localAddress}, http services initialized")
     case connected: Tcp.Connected => sender() ! Tcp.Register(self)
     case stats: Stats =>
