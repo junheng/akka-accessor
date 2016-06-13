@@ -84,8 +84,8 @@ class Accessor(address: String, port: Int, receiver: ActorSystem, plugins: List[
 object Accessor {
   val container = ActorSystem("accessor", ConfigFactory.parseString("akka {}"))
 
-  def start(address: String, port: Int, plugins: List[AccessorPlugin] = Nil)(implicit receiver: ActorSystem) = {
-    container.actorOf(Props(new Accessor(address, port, receiver, plugins)), "protocol")
+  def start(address: String, port: Int, plugins: List[AccessorPlugin] = Nil, intervalOfStatusReport:Int = 15)(implicit receiver: ActorSystem) = {
+    container.actorOf(Props(new Accessor(address, port, receiver, plugins, intervalOfStatusReport)), "protocol")
   }
 
   abstract class MessageEntity(code: String, caller: ActorRef)
