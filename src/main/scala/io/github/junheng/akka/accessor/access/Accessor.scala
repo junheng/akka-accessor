@@ -56,7 +56,11 @@ class Accessor(address: String, port: Int, receiver: ActorSystem, plugins: List[
             case None => "application/json"
           }
           contentType match {
-            case "application/json" | "text/plain" => Some(JsonMessageEntity(code, request.entity.asString(HttpCharsets.`UTF-8`), caller))
+            case method if method.startsWith("text/plain") =>
+              Some(JsonMessageEntity(code, request.entity.asString(HttpCharsets.`UTF-8`), caller))
+
+            case "application/json" | "text/plain" =>
+              Some(JsonMessageEntity(code, request.entity.asString(HttpCharsets.`UTF-8`), caller))
 
             case "application/octet-stream" =>
               val content = request.entity.data.toByteArray
